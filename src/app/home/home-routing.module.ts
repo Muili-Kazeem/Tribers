@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './pages/home/home.component';
 import { StoreComponent } from './pages/store/store.component';
+import { CouponComponent } from './pages/coupon/coupon.component';
 
 const routes: Routes = [
   {
@@ -11,7 +12,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'store',
+        redirectTo: 'coupon',
         pathMatch: "full"
       },
       {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'store',
         component: StoreComponent
+      },
+      {
+        path: 'coupon',
+        component: CouponComponent
       },
     ]
   },

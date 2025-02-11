@@ -6,6 +6,8 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LayoutComponent } from './layout/layout.component';
 import { StoreComponent } from './pages/store/store.component';
+import { SharedModule } from '../shared/shared.module';
+import { CouponComponent } from './pages/coupon/coupon.component';
 
 
 @NgModule({
@@ -13,11 +15,13 @@ import { StoreComponent } from './pages/store/store.component';
     NotFoundComponent,
     HomeComponent,
     LayoutComponent,
-    StoreComponent
+    StoreComponent,
+    CouponComponent
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    SharedModule
   ]
 })
 export class HomeModule { }
