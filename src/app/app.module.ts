@@ -7,7 +7,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { SharedModule } from './shared/shared.module';
-import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -16,7 +15,6 @@ import { ButtonModule } from 'primeng/button';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ButtonModule,
     SharedModule
   ],
   providers: [

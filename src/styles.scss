@@ -1,3 +1,7 @@
+/* You can add global styles to this file, and also import other style files */
+@forward "./partials/variables";
+@forward "./partials/globals.scss";
+@forward "./partials/fonts";
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
@@ -13,7 +17,7 @@ html {
     typography: Roboto,
     density: 0,
   ));
-}/* You can add global styles to this file, and also import other style files */
+}
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
