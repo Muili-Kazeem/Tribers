@@ -5,9 +5,12 @@ import { HomeRoutingModule } from './home-routing.module';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LayoutComponent } from './layout/layout.component';
-import { StoreComponent } from './pages/store/store.component';
 import { SharedModule } from '../shared/shared.module';
 import { CouponComponent } from './pages/coupon/coupon.component';
+import { CouponCardComponent } from './ui/coupon-card/coupon-card.component';
+import { NavBarComponent } from './ui/nav-bar/nav-bar.component';
+import { CouponFooterComponent } from './ui/coupon-footer/coupon-footer.component';
+import { CouponHeroComponent } from './ui/coupon-hero/coupon-hero.component';
 
 
 @NgModule({
@@ -15,8 +18,11 @@ import { CouponComponent } from './pages/coupon/coupon.component';
     NotFoundComponent,
     HomeComponent,
     LayoutComponent,
-    StoreComponent,
-    CouponComponent
+    CouponComponent,
+    CouponCardComponent,
+    NavBarComponent,
+    CouponFooterComponent,
+    CouponHeroComponent
   ],
   imports: [
     CommonModule,

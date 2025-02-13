@@ -8,6 +8,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { SliderModule } from 'primeng/slider';
 import { PaginatorModule } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
+import { HttpClientModule } from '@angular/common/http';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 @NgModule({
@@ -22,6 +24,8 @@ import { SelectModule } from 'primeng/select';
     SliderModule,
     PaginatorModule,
     SelectModule,
+    InputTextModule,
+    HttpClientModule
   ],
   exports: [
     ButtonModule,
@@ -32,6 +36,8 @@ import { SelectModule } from 'primeng/select';
     SliderModule,
     PaginatorModule,
     SelectModule,
+    InputTextModule,
+    HttpClientModule
   ]
 })
 export class SharedModule { }

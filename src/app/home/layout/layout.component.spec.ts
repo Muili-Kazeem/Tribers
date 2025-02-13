@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LayoutComponent } from './layout.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -8,7 +9,8 @@ describe('LayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LayoutComponent]
+      declarations: [LayoutComponent],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
 
@@ -17,7 +19,7 @@ describe('LayoutComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create LayoutComponent', () => {
     expect(component).toBeTruthy();
   });
 });
