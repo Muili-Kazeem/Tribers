@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "tribers-b519d"
-  }
+  },
+  "targets": {
+    "tribers-b519d": {
+      "hosting": {
+        "tribers": [
+          "tribers"
+        ],
+        "tribers-b519d": [
+          "tribers-b519d"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

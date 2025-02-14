@@ -5,8 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeng/themes/aura';
 import { SharedModule } from './shared/shared.module';
+import { MyPreset } from './mypreset';
 
 @NgModule({
   declarations: [
@@ -21,8 +21,13 @@ import { SharedModule } from './shared/shared.module';
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-          preset: Aura
-      }
+          preset: MyPreset,
+          options: {
+            darkModeSelector: false || 'none'
+          }
+      },
+      ripple: true,
+
   })
   ],
   bootstrap: [AppComponent]

@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LayoutComponent } from './layout.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NavBarComponent } from '../ui/nav-bar/nav-bar.component';
+import { CouponFooterComponent } from '../ui/coupon-footer/coupon-footer.component';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -9,8 +12,8 @@ describe('LayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LayoutComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [LayoutComponent, NavBarComponent, CouponFooterComponent],
+      imports: [RouterModule, SharedModule]
     })
     .compileComponents();
 
