@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PaginatorState } from 'primeng/paginator';
 import { RadioButtonClickEvent } from 'primeng/radiobutton';
 import { SelectChangeEvent } from 'primeng/select';
 import { SliderChangeEvent } from 'primeng/slider';
-import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map, Observable, Subject, Subscription, tap } from 'rxjs';
 import { HomeService } from '../../data-access/home.service';
 import { Categories, Chronologies, FilterEnum, IFilterForm, Locations, Percentages, PriceRange } from '../../models/coupon-filter';
 import { ICoupon } from '../../models/coupon';
@@ -15,18 +15,14 @@ import { ICoupon } from '../../models/coupon';
   templateUrl: './coupon.component.html',
   styleUrl: './coupon.component.scss'
 })
-export class CouponComponent implements OnInit, OnDestroy {
+export class CouponComponent implements OnInit {
 
-  allCoupons: ICoupon[] = [];
-  fetchedCoupons: ICoupon[] = [];
-  coupons: ICoupon[] = [];
-  couponSub!: Subscription;
-  searchSub!: Subscription | undefined;
+  private _home = inject(HomeService);
+  private allCouponsSubject = new Subject<ICoupon[]>();
+  allCoupons$ = this.allCouponsSubject.asObservable();
 
-  constructor(
-    private fb: FormBuilder,
-    private _home: HomeService,
-  ) {}
+  private filterActionSubject = new BehaviorSubject<String>('search');
+  filterAction$ = this.filterActionSubject.asObservable();
 
   categories = Categories;
   percentages = Percentages;
@@ -41,28 +37,20 @@ export class CouponComponent implements OnInit, OnDestroy {
   rows: number = 16;
   totalRecord: number = 0;
 
+  fetchedCoupons$ = this._home.getAllCoupons().pipe(
+    tap((coupons) => {
+      this.totalRecord = coupons.length;
+      this.allCouponsSubject.next(coupons);
+      this.filterActionSubject.next("next");
+    })
+  )
+
+  constructor(
+    private fb: FormBuilder,
+  ) {}
+
   ngOnInit() {
     this.initFilterForm();
-    this.couponSub = this._home.getAllCoupons().subscribe(
-      {
-        next: (coupons) => {
-          this.fetchedCoupons = coupons;
-          this.allCoupons = this.fetchedCoupons;
-          this.totalRecord = this.allCoupons.length;
-          this.coupons = this.getDisplayedCoupons(this.allCoupons, this.first);
-        },
-        error: (err) => {
-          // console.log(err);
-        }
-      }
-    )
-
-    this.searchSub = this.filterForm.get('search')?.valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-    ).subscribe(( ) => {
-      this.generalFilter(FilterEnum.search);
-    });
   }
 
   initFilterForm() {
@@ -84,7 +72,7 @@ export class CouponComponent implements OnInit, OnDestroy {
   onPageChange(event: PaginatorState) {
     this.first = event.first as number;
     this.rows = event.rows as number;
-    this.coupons = this.getDisplayedCoupons(this.allCoupons, this.first);
+    this.filterActionSubject.next("pageChange");
   }
 
   generalFilter(
@@ -128,13 +116,24 @@ export class CouponComponent implements OnInit, OnDestroy {
       case FilterEnum.search:
         break;
     }
-
-    this.allCoupons = this.filterItems(this.fetchedCoupons, this.filterForm.value);
-    this.first = 0;
-    this.totalRecord = this.allCoupons.length;
-    this.coupons = this.getDisplayedCoupons(this.allCoupons, this.first);
+    this.filterActionSubject.next(filterCode);
   }
 
+  displayedCoupons$ = combineLatest([
+    this.fetchedCoupons$,
+    this.allCoupons$,
+    this.filterAction$
+  ]).pipe(
+    map(([fetchedCoupons, allCoupons, filter]) => {
+      allCoupons = this.filterItems(fetchedCoupons, this.filterForm.value);
+
+      if (filter !== "pageChange") {
+        this.first = 0;
+      }
+      this.totalRecord = allCoupons.length;
+      return this.getDisplayedCoupons(allCoupons, this.first)
+    })
+  )
 
   filterItems(items: ICoupon[], filters: Partial<IFilterForm>): ICoupon[] {
     return items.filter(item =>
@@ -144,14 +143,5 @@ export class CouponComponent implements OnInit, OnDestroy {
       (filters.percentage ? (item.coupon_discount >= (filters.percentage.min as number)) && (item.coupon_discount <= (filters.percentage.max as number)) : true) &&
       (filters.priceRange ? (+item.amount >= filters.priceRange[0]) && (+item.amount <= filters.priceRange[1]) : true)
     ).sort((a, b) => filters.sort?.key === "up" ? new Date(a.created_at).getTime() - new Date(b.created_at).getTime() : new Date(b.created_at).getTime() - new Date(a.created_at).getTime() );
-  }
-
-  ngOnDestroy(): void {
-    if (this.couponSub) {
-      this.couponSub.unsubscribe();
-    }
-    if (this.searchSub) {
-      this.searchSub.unsubscribe();
-    }
   }
 }

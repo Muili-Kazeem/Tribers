@@ -53,6 +53,7 @@
             <input formControlName="search" type="text" id="search"
               class="block w-full py-3 px-6 pr-14 placeholder:font-bold text-base border border-gray-300 bg-[#FAFAFA] rounded-[48px] focus:ring-tribeGrey_2 focus:border-tribeGrey_2"
               placeholder="Search for store items"
+              (keyup)="generalFilter(FilterEnum.search)"
             >
             <div class="absolute right-6 top-1/2 -translate-y-1/2 ps-3 cursor-pointer">
               <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -70,7 +71,7 @@
           </div>
         </div>
 
-        <ng-container *ngIf="coupons.length > 0">
+        <ng-container *ngIf="displayedCoupons$ | async as coupons">
           <div class="col-span-2 md:col-span-3 lg:col-span-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 items-stretch">
             <ng-container *ngFor="let coupon of coupons">
               <app-coupon-card [coupon]="coupon"></app-coupon-card>
@@ -78,8 +79,8 @@
           </div>
         </ng-container>
 
-        <ng-container *ngIf="!(coupons.length > 0)">
-          <div class="col-span-2 md:col-span-3 lg:col-span-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 items-stretch">
+        <ng-container *ngIf="displayedCoupons$ | async as coupons">
+          <div class="col-span-2 md:col-span-3 lg:col-span-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 items-stretch" *ngIf="!(coupons.length > 0)">
             <p class=" p-6 font-bold text-xl col-span-4">Coupons not available</p>
           </div>
         </ng-container>
